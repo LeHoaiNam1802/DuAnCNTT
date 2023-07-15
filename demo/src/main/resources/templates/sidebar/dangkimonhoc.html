@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html
+        lang="vi"
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head
+        th:replace="template/template.html :: head('TRƯỜNG ĐẠI HỌC THĂNG LONG')"
+></head>
+
+<head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+  <link rel="stylesheet" th:href="@{/style/dangkihoc.css}" />
+  <link rel="stylesheet" th:href="@{/style/thoikhoabieutoantruong.css}" />
+
+</head>
+
+<body>
+<div id="head">
+  <div th:replace="template/template.html :: header"></div>
+
+  <div id="page">
+    <div th:replace="template/template.html :: sidebar"></div>
+    <div id="right">
+      <div class="title">Danh sách các môn học được đăng kí</div>
+      <div class="entry">
+        <div>
+          <p style="text-align: center; font-weight: bold; font-size: 20px">
+            Danh sách các môn được đăng kí
+          </p>
+        </div>
+
+        <div th:if="${mess != null}">
+          <div th:if="${mess == 'Đã đăng ký thành công' || mess == 'Đã hủy thành công'}">
+            <span style="color: blue" th:text="${mess}"></span>
+          </div>
+          <div th:unless="${mess == 'Đã đăng ký thành công' || mess == 'Đã hủy thành công'}">
+            <span style="color: red" th:text="${mess}"></span>
+          </div>
+        </div>
+
+        <div>
+          <table
+                  class="grid"
+                  border="0"
+                  cellspacing="0"
+                  style="
+                  border-style: none;
+                  width: 100%;
+                  border-collapse: collapse;
+                "
+          >
+            <tbody>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col"></th>
+              <th scope="col">Mã Môn</th>
+              <th scope="col">Tên Môn</th>
+              <th scope="col">Tên Lớp</th>
+              <th scope="col">Thứ</th>
+              <th scope="col">Ca</th>
+              <th scope="col">Phòng học</th>
+              <th scope="col">Tín chỉ</th>
+              <th scope="col">Giá tiền</th>
+              <th scope="col">Trạng thái</th>
+            </tr>
+
+            <tr th:each="subject, iStat : ${listSubject}">
+              <td th:text="${iStat.index+1}"></td>
+              <td>
+                <a th:href="@{/dkh/{id}(id=${subject.id})}" >
+                  <button class="btn btn-sm btn-outline-primary">Đăng kí</button>
+                </a>
+              </td>
+              <td th:text="${subject.id}"></td>
+              <td th:text="${subject.name}"></td>
+              <td th:text="${subject.tenLop}"></td>
+              <td th:text="${subject.thu}"></td>
+              <td th:text="${subject.ca}"></td>
+              <td th:text="${subject.phongHoc}"></td>
+              <td th:text="${subject.soTinChi}"></td>
+              <td th:text="${subject.giaTien}"></td>
+              <td th:text="|[${subject.soLuongSvDaDk} / ${subject.soLuongSv}]|"></td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <p style="text-align: center; font-weight: bold; font-size: 20px ;margin-top: 30px;">
+            Danh sách các môn đã được đăng kí
+          </p>
+        </div>
+        <div>
+          <table
+                  class="grid"
+                  border="0"
+                  cellspacing="0"
+                  style="
+                    border-style: none;
+                    width: 100%;
+                    border-collapse: collapse;
+                  "
+          >
+            <tbody>
+            <tr>
+              <th scope="col">STT</th>
+              <th scope="col"></th>
+              <th scope="col">Tên Môn</th>
+              <th scope="col">Tên Lớp</th>
+              <th scope="col">Thứ</th>
+              <th scope="col">Ca</th>
+              <th scope="col">Phòng học</th>
+              <th scope="col">Tín chỉ</th>
+              <th scope="col">Giá tiền</th>
+            </tr>
+            <div th:if="${subjectDk != null }">
+              <tr th:each="subject, iStat : ${subjectDk}">
+                <td th:text="${iStat.index+1}"></td>
+                <td>
+                  <a th:href="@{/huydkh/{id}(id=${subject.id})}" >
+                    <button class="btn btn-sm btn-outline-danger">Hủy</button>
+                  </a>
+                </td>
+                <td th:text="${subject.name}"></td>
+                <td th:text="${subject.tenLop}"></td>
+                <td th:text="${subject.thu}"></td>
+                <td th:text="${subject.ca}"></td>
+                <td th:text="${subject.phongHoc}"></td>
+                <td th:text="${subject.soTinChi}"></td>
+                <td th:text="${subject.giaTien}"></td>
+              </tr>
+            </div>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div th:replace="template/template.html :: footer"></div>
+</div>
+</body>
+
+<script>
+  const cb = document.querySelectorAll('.accept');
+
+  cb.forEach((item) => {
+    item.addEventListener('click', e => {
+      if(item.checked){
+        console.log(item.dataset.subject)
+        item.load("/checkdkh/" + item.dataset.subject)
+      }
+    })
+  })
+
+</script>
+</html>

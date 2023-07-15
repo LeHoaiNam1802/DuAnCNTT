@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Đổi mật khẩu - Thang Long University</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <link rel="shortcut icon" href="http://cdn.onlinewebfonts.com/svg/download_153418.png" type="image/x-icon"/>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="shortcut icon"
+          href="https://th.bing.com/th/id/OIP.7ygufrwv0ZC8FpCGIlV5RAHaHa?pid=ImgDet&w=221&h=221&c=7&dpr=1.25"
+          type="image/x-icon"/>
+    <link rel="stylesheet" th:href="@{/style/doimatkhau.css}"/>
+</head>
+
+<body>
+<div class="main">
+    <div class="wrap">
+        <form class="form" th:action="@{/doimatkhau}" method="post">
+            <img src="https://login.thanglong.edu.vn/images/logotlu.jpg" id="anh1" alt="logo"/>
+            <p id="title">Đổi mật khẩu</p>
+
+<!--            <div class="input" data-validate="Mật khẩu hiện tại">-->
+<!--                <input type="text" minlength="3" maxlength="20" name="username" id="username"-->
+<!--                       placeholder="Mật khẩu hiện tại" class="input100">-->
+<!--            </div>-->
+
+            <div th:if="${mess != null}">
+                <h4 style="color: red; padding-bottom: 20px" id="mess" th:text="${mess}"></h4>
+            </div>
+
+            <div class="password" data-validate="Điền tên mật khẩu">
+                <input type="password" minlength="3" maxlength="20" name="password" id="password"
+                       placeholder="Mật khẩu mới" class="input100">
+            </div>
+
+            <div class="password" data-validate="Điền tên mật khẩu1">
+                <input type="password" minlength="3" maxlength="20" name="password1" id="password1"
+                       placeholder="Xác nhận mật khẩu mới" class="input100">
+            </div>
+
+            <div class="from-action login">
+                <button type="submit" class="btn login-form" id = "updatePassword" value="Đổi mật khẩu">Đổi mật khẩu</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+<script>
+    let mess = document.getElementById("mess")
+    let password = document.getElementById("password")
+    let password1 = document.getElementById("password1")
+    let updatePassword = document.getElementById("updatePassword")
+    updatePassword.style.display = "none"
+
+    password1.addEventListener("input", e => {
+        if(e.target.value == password.value) {
+            updatePassword.style.display = "block"
+        }else {
+            updatePassword.style.display = "none"
+        }
+    })
+
+    if(mess.innerText == 'Đổi mật khẩu thành công'){
+        function Redirect() {
+            window.location="http://localhost:8080/";
+        }
+
+        document.write("You will be redirected to main page in 5 sec.");
+        setTimeout('Redirect()', 2000);
+    }
+
+</script>
+<!--http://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html#script-inlining-javascript-and-dart-->
+</html>
